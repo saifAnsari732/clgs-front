@@ -1,4 +1,59 @@
 #imag{
     border: 3px solid cyan;
-    box-shadow: 0 0 50px rgba(0, 255, 255, 7.5);
+    border-radius: 100%;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 7.5);
+}
+.btn{
+    background-image: linear-gradient(to right, #015958, #022652);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.btn2{
+    background-image: linear-gradient(to right, #015958, #022652);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+.btn3{
+    background-image: linear-gradient(to right, #015958, #022652);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+#inp input{
+    border: 3px solid rgb(27, 139, 119);
+    font-size: 30px;
+    font-weight: bold;
+    height: 50px;
+}
+
+#inp label{
+    
+    font-family: sans-serif;
+    font-weight: 300;
+    color: rgb(0, 0, 0);
+}
+ textarea{
+    border: 3px solid rgb(27, 139, 119)
+}
+
+.log {
+box-shadow: 0px,0px 30px cyan;
+border: 3px solid rgb(0, 0, 0);
+width: 100%;
+padding: 15px;
+border-radius: 10px;
 }

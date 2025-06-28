@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./style.css"; // Assuming you have a CSS file for additional styles
+import { BACK } from "./Util";
+import { Link } from "react-router-dom";
 const Profile = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [profileData, setProfileData] = useState("");
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
+   const toke=localStorage.getItem('authToken'); // Initialize authToken in localStorage
+
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/v1/user/data/685cf62b849a833f7e70d1f6"
-        );
+        const response = await axios.get(`${BACK}/user/data`, {
+          headers: {
+            Authorization: `Bearer ${toke}`,
+          },
+          withCredentials: true, // Ensure cookies are sent with the request
+        });
+        console.log("Profile data fetched successfully:", response.data.userdata);
         setProfileData(response.data.userdata);
-        console.log("Profile data fetched successfully:", response.data.userdata.image.url);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -30,8 +37,11 @@ const Profile = () => {
             : "bg-gradient-to-br from-blue-900 to-black"
         } py-12 px-4 sm:px-6 lg:px-8`}
       >
+        <Link className="btn" to="/register">Register</Link>
+        <Link className="btn2" to="/login">Login</Link>
         <div className="max-w-3xl mx-auto ">
           {/* Dark Mode Toggle */}
+          
           <div className="flex justify-end mb-4">
             <button
               onClick={toggleDarkMode}
@@ -41,12 +51,14 @@ const Profile = () => {
                   : "bg-gray-200 focus:ring-gray-500"
               }`}
             >
+              
               <span
                 className={`inline-block w-4 h-4 transform transition-transform rounded-full bg-white ${
                   darkMode ? "translate-x-6" : "translate-x-1"
                 }`}
               />
             </button>
+            
             <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               {darkMode ? "Dark" : "Light"}
             </span>
@@ -74,7 +86,7 @@ const Profile = () => {
               <div className="md:w-1/3 p-6 flex justify-center">
                 <div className="relative">
                   <img
-                  id="imag"
+                    id="imag"
                     className="w-[400px] h-[400px] rounded-full  object-cover "
                     style={{ borderColor: darkMode ? "#7c3aed" : "#e9d5ff" }}
                     src={profileData?.image?.url}
@@ -95,7 +107,7 @@ const Profile = () => {
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
-                      {profileData.username|| "Alex Johnson"}
+                      {profileData.username || "Alex Johnson"}
                     </h2>
                     <p
                       className={`font-medium ${

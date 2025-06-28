@@ -83,7 +83,7 @@ const Profile = () => {
           >
             <div className="md:flex">
               {/* Profile Image Section */}
-              <div className="md:w-1/3 p-6 flex justify-center">
+              <div className=" p-6 flex justify-center">
                 <div className="relative">
                   <img
                     id="imag"

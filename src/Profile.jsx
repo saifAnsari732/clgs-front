@@ -37,7 +37,7 @@ const Profile = () => {
             : "bg-gradient-to-br from-blue-900 to-black"
         } py-12 px-4 sm:px-6 lg:px-8`}
       >
-        <Link className="btn2" to="/login">Login</Link>
+        <Link className="btn2" to="/">Login</Link>
         <div className="max-w-3xl mx-auto ">
           {/* Dark Mode Toggle */}
           

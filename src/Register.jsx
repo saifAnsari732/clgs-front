@@ -51,7 +51,7 @@ const Register = () => {
 
       toast.success(response.data.message || "Registration successful!");
       //  nevigate to login or home page if needed
-      navigate("/login")
+      navigate("/")
       
       // Reset form
       // setFormData({

@@ -10,8 +10,8 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/profile" element={ toke? <Profile />:<Navigate to={"/login"}></Navigate> } />
-        <Route path="/" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,8 +1,21 @@
 #imag{
-    border: 3px solid cyan;
+    border: 3px solid rgb(66, 220, 255);
     border-radius: 100%;
     box-shadow: 0 0 30px rgba(0, 255, 255, 7.5);
 }
+@media screen and (max-width: 468px) {
+    #imag{
+       
+        width: 300px;
+        height: 300px;
+        border-radius: 100%;
+        object-fit: cover;
+        background: #2e95d5;
+    }
+      
+    
+}
+
 .btn{
     background-image: linear-gradient(to right, #015958, #022652);
     color: white;

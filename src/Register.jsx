@@ -201,7 +201,7 @@ const Register = () => {
               "Register"
             )}
           </button> <br />
-          <Link className='btn3  ' to='/login'>Login</Link>
+          <Link className='btn3  ' to='/'>Login</Link>
         </form>
       </div>
     </div>

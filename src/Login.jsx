@@ -35,10 +35,9 @@ const Login = () => {
 
       // Handle successful login
       toast.success("Login successful!");
-
+      navigate("/profile");
       localStorage.setItem("authToken", response.data.user.token);
       // Redirect to dashboard or home page
-      navigate("/profile");
     } catch (error) {
       // Handle different error scenarios
       if (error.response) {

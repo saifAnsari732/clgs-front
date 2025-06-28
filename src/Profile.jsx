@@ -240,19 +240,19 @@ const Profile = () => {
                           darkMode ? "text-white" : "text-gray-800"
                         }`}
                       >
-                        Techville Institute of Technology
+                        Maharishi University of Technology
                       </p>
                       <p
                         className={darkMode ? "text-gray-300" : "text-gray-600"}
                       >
-                        456 Innovation Boulevard, Techville, TV 12345
+                       Sitapur Road, P.O-Maharishi Vidya Mandir, Lucknow-226013 (UP)
                       </p>
                       <p
                         className={`text-sm ${
                           darkMode ? "text-gray-400" : "text-gray-500"
                         }`}
                       >
-                        Accredited by ABET | Est. 1995
+                        Accredited by APS | Est. 1995
                       </p>
                     </div>
                   </div>

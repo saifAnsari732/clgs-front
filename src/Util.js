@@ -1,1 +1,1 @@
-export const BACK="https://clg-backends.onrender.com/";
+export const BACK="https://saifuddinansari.onrender.com";

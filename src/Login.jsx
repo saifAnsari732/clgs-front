@@ -83,7 +83,7 @@ const Login = () => {
           <form id='log' onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-gray-700 mb-2 font-medium">
-                Username
+                Email
               </label>
               <input
                 type="text"
@@ -160,8 +160,11 @@ const Login = () => {
               )}
             </button>
 
-            <p className="text-center text-gray-600">
-              Don't have an account?{" "}
+            <p className="text-center text-gray-600 ">
+              <Link to="/AdminLogin" className="text-blue-700 mr-5 text-2xl ">
+              
+              AdminLogin
+              </Link> 
               <Link
                 to="/register"
                 className="text-blue-600 font-semibold hover:underline"

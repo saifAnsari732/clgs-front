@@ -6,11 +6,14 @@ import { Link } from "react-router-dom";
 const Profile = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [profileData, setProfileData] = useState("");
+  // const [Attendance, setAttendance] = useState(0);
+  const [count, setCount] = useState();
+  
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
-   const toke=localStorage.getItem('authToken'); // Initialize authToken in localStorage
-
+  const toke = localStorage.getItem("authToken"); // Initialize authToken in localStorage
+// profile data fetch
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -20,7 +23,10 @@ const Profile = () => {
           },
           withCredentials: true, // Ensure cookies are sent with the request
         });
-        console.log("Profile data fetched successfully:", response.data.userdata);
+        console.log(
+          "Profile data fetched successfully:",
+          response.data.userdata
+        );
         setProfileData(response.data.userdata);
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -28,6 +34,42 @@ const Profile = () => {
     };
     fetchdata();
   }, []);
+
+  // attendence fetch  code
+  useEffect(() => {
+    const fetchAttendance = async () => { 
+      try {
+        const response = await axios.get(`${BACK}/user/attendence`, {
+          headers: {
+            Authorization: `Bearer ${toke}`,
+          },
+          withCredentials: true,
+        });
+       
+        setCount(response.data.length);
+        console.log(response.data.length,"lenth"); // Assuming response.data is an array of attendance records
+      } catch (error) {
+        console.error("Error fetching attendance data:", error);
+      }
+    };
+    fetchAttendance();
+  }, []); 
+
+  // attendance create code
+  
+
+  const handelattendence = async () => {
+    try {
+      const response = await axios.post(`${BACK}/user/createattendence`, {
+        attendance: count,
+      });
+
+      console.log("Attendance created successfully:", response.data);
+    } catch (error) {
+      console.error("Error creating attendance:", error);
+    }
+  };
+
   return (
     <div>
       <div
@@ -37,10 +79,12 @@ const Profile = () => {
             : "bg-gradient-to-br from-blue-900 to-black"
         } py-12 px-4 sm:px-6 lg:px-8`}
       >
-        <Link className="btn2" to="/">Login</Link>
+        <Link className="btn2" to="/">
+          Login
+        </Link>
         <div className="max-w-3xl mx-auto ">
           {/* Dark Mode Toggle */}
-          
+
           <div className="flex justify-end mb-4">
             <button
               onClick={toggleDarkMode}
@@ -50,14 +94,13 @@ const Profile = () => {
                   : "bg-gray-200 focus:ring-gray-500"
               }`}
             >
-              
               <span
                 className={`inline-block w-4 h-4 transform transition-transform rounded-full bg-white ${
                   darkMode ? "translate-x-6" : "translate-x-1"
                 }`}
               />
             </button>
-            
+
             <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               {darkMode ? "Dark" : "Light"}
             </span>
@@ -98,7 +141,6 @@ const Profile = () => {
               </div>
 
               {/* Profile Details Section */}
-            
 
               <div className="md:w-2/3 p-6">
                 <div className="space-y-4">
@@ -219,6 +261,20 @@ const Profile = () => {
                           </span>
                           <span>{profileData.address}</span>
                         </li>
+                        <li className="flex items-center">
+                          <span
+                            className={`font-medium w-24 ${
+                              darkMode ? "text-gray-300" : "text-gray-700"
+                            }`}
+                          >
+                            Date:
+                          </span>
+                          <span>
+                            {profileData?.createdAt
+                              ? new Date(profileData.createdAt).toLocaleDateString()
+                              : "N/A"}
+                          </span>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -246,7 +302,8 @@ const Profile = () => {
                       <p
                         className={darkMode ? "text-gray-300" : "text-gray-600"}
                       >
-                       Sitapur Road, P.O-Maharishi Vidya Mandir, Lucknow-226013 (UP)
+                        Sitapur Road, P.O-Maharishi Vidya Mandir, Lucknow-226013
+                        (UP)
                       </p>
                       <p
                         className={`text-sm ${
@@ -255,6 +312,7 @@ const Profile = () => {
                       >
                         Accredited by APS | Est. 1995
                       </p>
+                     
                     </div>
                   </div>
                 </div>
@@ -269,7 +327,7 @@ const Profile = () => {
                   : "bg-gray-100 border-gray-200"
               }`}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-start space-x-4">
                 <p
                   className={`text-lg ${
                     darkMode ? "text-green-500" : "text-purple-900"
@@ -277,25 +335,18 @@ const Profile = () => {
                 >
                   Creater By : Saifuddin Ansari
                 </p>
-                <div className="flex space-x-2">
-                  <span
-                    className={`px-3 py-1 text-xs font-medium rounded-full ${
+
+                <div className="flex space-x-6 space-y-2">
+                  <button onClick={handelattendence}
+                    className={`px-3 py-2 text-1xl font-medium border-2 border-s-violet-600 ${
                       darkMode
-                        ? "bg-blue-900 text-blue-200"
-                        : "bg-blue-100 text-blue-800"
+                        ? "bg-gradient-to-r from-purple-600 to-blue-500 text-green-200"
+                        : "bg-gradient-to-r from-teal-300 to-blue-400 text-green-800"
                     }`}
                   >
-                    Active
-                  </span>
-                  <span
-                    className={`px-3 py-1 text-xs font-medium rounded-full ${
-                      darkMode
-                        ? "bg-green-900 text-green-200"
-                        : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    Verified
-                  </span>
+                    Attendance: 
+                  </button>
+                  <p className={`text-2xl  border-x-slate-950  ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{count} - day</p>
                 </div>
               </div>
             </div>

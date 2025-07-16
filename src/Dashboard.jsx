@@ -57,7 +57,7 @@ export default function Dashboard() {
 
       <div className="mb-6 grid grid-cols-1 gap-4">
         <div className="bg-gradient-to-r from-green-200 via-green-300 to-green-400 text-green-800 px-6 py-4 rounded-xl shadow text-center">
-          <h2 className="text-xl font-bold">Total Present</h2>
+          <h2 className="text-xl font-bold">Total Students Present</h2>
           <p className="text-4xl font-bold">{totalPresent}</p>
         </div>
       </div>

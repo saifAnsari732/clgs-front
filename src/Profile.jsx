@@ -3,6 +3,7 @@ import axios from "axios";
 import "./style.css"; // Assuming you have a CSS file for additional styles
 import { BACK } from "./Util";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 const Profile = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [profileData, setProfileData] = useState("");
@@ -59,6 +60,8 @@ const Profile = () => {
   
 
   const handelattendence = async () => {
+    confirm("Are You Sure")
+    toast.success("Attendence Successfull")
     try {
       const response = await axios.post(`${BACK}/user/createattendence`, {
         attendance: count,

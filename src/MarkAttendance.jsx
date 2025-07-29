@@ -19,7 +19,7 @@ const MarkAttendance = () => {
     try {
       // eslint-disable-next-line no-unused-vars
       const res = await axios.post("http://localhost:3000/api/v1/user/mark", {
-        student,
+        student: id,
         date,
         status,
       });

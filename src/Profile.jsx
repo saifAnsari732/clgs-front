@@ -3,18 +3,21 @@ import axios from "axios";
 import "./style.css"; // Assuming you have a CSS file for additional styles
 import { BACK } from "./Util";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const [profileData, setProfileData] = useState("");
   // const [Attendance, setAttendance] = useState(0);
-  const [count, setCount] = useState();
-  
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
-  const toke = localStorage.getItem("authToken"); // Initialize authToken in localStorage
-// profile data fetch
+  const toke = localStorage.getItem("authToken");
+  // console.log(toke);
+   // Initialize authToken in localStorage
+  // profile data fetch
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -24,11 +27,11 @@ const Profile = () => {
           },
           withCredentials: true, // Ensure cookies are sent with the request
         });
-        console.log(
-          "Profile data fetched successfully:",
-          response.data.userdata
-        );
-        setProfileData(response.data.userdata);
+        localStorage.setItem("profile-image",response.data.userdata.image.url)
+        localStorage.setItem("profile-id",response.data.userdata._id)
+
+        // console.log("Profile data ",response.data.userdata._id);
+        setProfileData(response?.data?.userdata);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -37,41 +40,23 @@ const Profile = () => {
   }, []);
 
   // attendence fetch  code
-  useEffect(() => {
-    const fetchAttendance = async () => { 
-      try {
-        const response = await axios.get(`${BACK}/user/attendence`, {
-          headers: {
-            Authorization: `Bearer ${toke}`,
-          },
-          withCredentials: true,
-        });
-       
-        setCount(response.data.length);
-        console.log(response.data.length,"lenth"); // Assuming response.data is an array of attendance records
-      } catch (error) {
-        console.error("Error fetching attendance data:", error);
-      }
-    };
-    fetchAttendance();
-  }, []); 
+  // useEffect(() => {
+  //   const fetchAttendance = async () => {
+  //     try {
+  //       const response = await axios.get(`${BACK}/user/data`, {
+  //         headers: {
+  //           Authorization: `Bearer ${toke}`,
+  //         },
+  //         withCredentials: true,
+  //       });
 
-  // attendance create code
-  
-
-  const handelattendence = async () => {
-    confirm("Are You Sure")
-    toast.success("Attendence Successfull")
-    try {
-      const response = await axios.post(`${BACK}/user/createattendence`, {
-        attendance: count,
-      });
-
-      console.log("Attendance created successfully:", response.data);
-    } catch (error) {
-      console.error("Error creating attendance:", error);
-    }
-  };
+  //        // Assuming response.data is an array of attendance records
+  //     } catch (error) {
+  //       console.error("Error fetching attendance data:", error);
+  //     }
+  //   };
+  //   fetchAttendance();
+  // }, []);
 
   return (
     <div>
@@ -82,8 +67,8 @@ const Profile = () => {
             : "bg-gradient-to-br from-blue-900 to-black"
         } py-12 px-4 sm:px-6 lg:px-8`}
       >
-        <Link className="btn2" to="/">
-          Login
+        <Link className="btn2   text-lg " to="/">
+        Home
         </Link>
         <div className="max-w-3xl mx-auto ">
           {/* Dark Mode Toggle */}
@@ -162,6 +147,7 @@ const Profile = () => {
                     >
                       Computer Science Engineering
                     </p>
+                    
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -274,7 +260,9 @@ const Profile = () => {
                           </span>
                           <span>
                             {profileData?.createdAt
-                              ? new Date(profileData.createdAt).toLocaleDateString()
+                              ? new Date(
+                                  profileData.createdAt
+                                ).toLocaleDateString()
                               : "N/A"}
                           </span>
                         </li>
@@ -315,7 +303,6 @@ const Profile = () => {
                       >
                         Accredited by APS | Est. 1995
                       </p>
-                     
                     </div>
                   </div>
                 </div>
@@ -340,16 +327,21 @@ const Profile = () => {
                 </p>
 
                 <div className="flex space-x-6 space-y-2">
-                  <button onClick={handelattendence}
+                  <button
+                    onClick={() => navigate("/userattendance")}
                     className={`px-3 py-2 text-1xl font-medium border-2 border-s-violet-600 ${
                       darkMode
                         ? "bg-gradient-to-r from-purple-600 to-blue-500 text-green-200"
                         : "bg-gradient-to-r from-teal-300 to-blue-400 text-green-800"
                     }`}
                   >
-                    Attendance: 
+                    Attendance:
                   </button>
-                  <p className={`text-2xl  border-x-slate-950  ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{count} - day</p>
+                  <p
+                    className={`text-2xl  border-x-slate-950  ${
+                      darkMode ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  ></p>
                 </div>
               </div>
             </div>

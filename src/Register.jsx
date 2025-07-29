@@ -51,21 +51,10 @@ const Register = () => {
 
       toast.success(response.data.message || "Registration successful!");
       //  nevigate to login or home page if needed
-      navigate("/")
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
       
-      // Reset form
-      // setFormData({
-      //   username: "",
-      //   email: "",
-      //   password: "",
-      //   roll: "",
-      //   classname: "",
-      //   semester: "",
-      //   branch: "",
-      //   phone: "",
-      //   address: "",
-      //   image: null,
-      // });
     } catch (err) {
       toast.error(err.response?.data?.message || "Registration failed");
     } finally {
@@ -74,88 +63,75 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr bg-green-800 from-slate-800 flex items-center justify-center p-3">
-     
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #667eea 0%, #43cea2 50%, #ff512f 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem 1rem",
+      }}
+    >
       <Toaster />
-      
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-4">
-        <h2 className="text-3xl font-bold text-center text-orange-400 p-6 ">
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 480,
+          background: "rgba(255,255,255,0.13)",
+          borderRadius: 24,
+          boxShadow: "0 8px 32px 0 rgba(31,38,135,0.15)",
+          padding: "2.5rem 2rem 2rem 2rem",
+          backdropFilter: "blur(8px)",
+          border: "1.5px solid rgba(255,255,255,0.18)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "2.2rem",
+            fontWeight: 700,
+            textAlign: "center",
+            color: "#ff512f",
+            marginBottom: 24,
+            letterSpacing: 1,
+            textShadow: "0 2px 8px rgba(0,0,0,0.13)",
+          }}
+        >
           User Registration
         </h2>
-
-        <form onSubmit={handleSubmit} className="">
-          <div id='inp' className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <InputField
-              label="Username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              
-            />
-            <InputField
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Roll Number"
-              name="roll"
-              value={formData.roll}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Class"
-              name="classname"
-              value={formData.classname}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Semester"
-              name="semester"
-              value={formData.semester}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Branch"
-              name="branch"
-              value={formData.branch}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Phone"
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleChange}
-            />
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <InputField label="Username" name="username" value={formData.username} onChange={handleChange} />
+            <InputField label="Email" name="email" type="email" value={formData.email} onChange={handleChange} />
+            <InputField label="Password" name="password" type="password" value={formData.password} onChange={handleChange} />
+            <InputField label="Roll Number" name="roll" value={formData.roll} onChange={handleChange} />
+            <InputField label="Class" name="classname" value={formData.classname} onChange={handleChange} />
+            <InputField label="Semester" name="semester" value={formData.semester} onChange={handleChange} />
+            <InputField label="Branch" name="branch" value={formData.branch} onChange={handleChange} />
+            <InputField label="Phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} />
           </div>
-
-          <div>
-            <label  className="block text-sm font-medium text-gray-700 mb-1">
-              Address
-            </label>
+          <div style={{ marginTop: 12 }}>
+            <label style={{ color: "#333", fontWeight: 500, marginBottom: 4, display: "block" }}>Address</label>
             <textarea
               name="address"
               value={formData.address}
               onChange={handleChange}
-             id='inps'
-              className="w-full px-3 py-2   rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
               required
+              style={{
+                width: "100%",
+                padding: "0.8rem 1rem",
+                borderRadius: 8,
+                border: "none",
+                fontSize: "1rem",
+                marginBottom: 4,
+                background: "rgba(255,255,255,0.7)",
+                boxShadow: "0 1px 4px rgba(67,206,162,0.08)",
+              }}
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div style={{ marginTop: 12 }}>
+            <label style={{ color: "#333", fontWeight: 500, marginBottom: 4, display: "block" }}>
               Profile Image (PNG/JPG only)
             </label>
             <input
@@ -163,23 +139,47 @@ const Register = () => {
               name="image"
               onChange={handleImageChange}
               accept="image/png, image/jpeg"
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               required
+              style={{
+                width: "100%",
+                padding: "0.5rem 0.2rem",
+                borderRadius: 8,
+                background: "rgba(255,255,255,0.7)",
+                marginBottom: 4,
+              }}
             />
           </div>
-
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 flex justify-center items-center  "
+            style={{
+              width: "100%",
+              background: "linear-gradient(90deg, #43cea2 0%, #185a9d 100%)",
+              color: "#fff",
+              padding: "0.9rem 0",
+              borderRadius: 8,
+              border: "none",
+              fontWeight: "bold",
+              fontSize: "1.1rem",
+              marginTop: 18,
+              marginBottom: 8,
+              boxShadow: "0 4px 16px rgba(67,206,162,0.2)",
+              cursor: loading ? "not-allowed" : "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              transition: "background 0.2s, box-shadow 0.2s",
+              opacity: loading ? 0.7 : 1,
+            }}
           >
             {loading ? (
               <>
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white "
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
+                  style={{ marginRight: 8 }}
                 >
                   <circle
                     className="opacity-25"
@@ -200,27 +200,52 @@ const Register = () => {
             ) : (
               "Register"
             )}
-          </button> <br />
-          <Link className='btn3  ' to='/'>Login</Link>
+          </button>
+          <Link
+            to="/"
+            style={{
+              display: "block",
+              width: "100%",
+              textAlign: "center",
+              color: "#185a9d",
+              fontWeight: 600,
+              textDecoration: "none",
+              padding: "0.7rem 0",
+              borderRadius: 8,
+              background: "rgba(67,206,162,0.08)",
+              marginTop: 4,
+              transition: "background 0.2s, color 0.2s",
+            }}
+            className="btn3"
+          >
+            Login
+          </Link>
         </form>
       </div>
     </div>
   );
 };
 
+
 // Reusable Input Component
 const InputField = ({ label, name, type = "text", value, onChange }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">
-      {label}
-    </label>
+  <div style={{ marginBottom: 8 }}>
+    <label style={{ color: "#333", fontWeight: 500, marginBottom: 4, display: "block" }}>{label}</label>
     <input
       type={type}
       name={name}
       value={value}
       onChange={onChange}
-      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       required
+      style={{
+        width: "100%",
+        padding: "0.8rem 1rem",
+        borderRadius: 8,
+        border: "none",
+        fontSize: "1rem",
+        background: "rgba(255,255,255,0.7)",
+        boxShadow: "0 1px 4px rgba(67,206,162,0.08)",
+      }}
     />
   </div>
 );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import  { Toaster } from "react-hot-toast";
+import  toast, { Toaster } from "react-hot-toast";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -17,8 +17,11 @@ const AdminLogin = () => {
     const storedPassword = localStorage.getItem("password2");
     
     if(storedEmail==="saif@me.com" && storedPassword==="muit12"){
-       
-         navigate("/Dashboard")
+
+      toast.success("Admin login successful");
+      setTimeout(() => {
+        navigate("/markattendance");
+      }, 1000);
     }
     else{
         setError("Admin not found");

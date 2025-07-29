@@ -35,8 +35,12 @@ const Login = () => {
 
       // Handle successful login
       toast.success("Login successful!");
-      navigate("/profile");
-      localStorage.setItem("authToken", response.data.user.token);
+      setTimeout(() => {
+        
+        navigate("/profile");
+      }, 1200);
+    //  console.log("tokennnnn",response.data.token);
+      localStorage.setItem("authToken", response.data.token);
       // Redirect to dashboard or home page
     } catch (error) {
       // Handle different error scenarios
@@ -121,9 +125,7 @@ const Login = () => {
                 <label className="ml-2 block text-gray-700">Remember me</label>
               </div>
 
-              <a href="#" className="text-blue-600 hover:underline">
-                Forgot password?
-              </a>
+              
             </div>
 
             <button
@@ -161,10 +163,7 @@ const Login = () => {
             </button>
 
             <p className="text-center text-gray-600 ">
-              <Link to="/AdminLogin" className="text-blue-700 mr-5 text-2xl ">
               
-              AdminLogin
-              </Link> 
               <Link
                 to="/register"
                 className="text-blue-600 font-semibold hover:underline"

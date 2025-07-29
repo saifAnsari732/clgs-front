@@ -50,8 +50,8 @@ const imag=localStorage.getItem("profile-image")
         }}
       >
         {/* small image */}
-        <div className="w-[300px] ml-11">
-          <img src={imag} alt="Student" className="h-[250px] flex items-center justify-center rounded-full sm:ml-52 w-[200px]" />
+        <div className="w-[300px] ml-20">
+          <img src={imag} alt="Student" className="h-[300px] flex items-center justify-center rounded-full sm:ml-52 w-[200px]" />
         </div>
         <h2
           style={{

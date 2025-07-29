@@ -36,6 +36,7 @@ const MarkAttendance = () => {
     }
   };
   return (
+    
     <div
       style={{
         minHeight: "100vh",
@@ -46,6 +47,7 @@ const MarkAttendance = () => {
         padding: "2rem 1rem",
       }}
     >
+      
       <Toaster position="top-center" reverseOrder={false} />
       <form
         onSubmit={handleSubmit}

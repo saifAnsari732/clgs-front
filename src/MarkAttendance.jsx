@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-
+import { BACK } from "./Util"; // Adjust the import path as needed
 const MarkAttendance = () => {
   const navigate = useNavigate();
   const [student, setStudent] = useState("");
@@ -12,29 +12,39 @@ const MarkAttendance = () => {
   const [error, setError] = useState("");
 
   const id = localStorage.getItem("profile-id");
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    setError("");
-    try {
-      // eslint-disable-next-line no-unused-vars
-      const res = await axios.post("http://localhost:3000/api/v1/user/mark", {
-        student: id,
-        date,
-        status,
-      });
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setMessage("");
+  setError("");
+  try {
+    if (!id) {
+      setError("Student ID not found. Please login again.");
+      return;
+    }
+    if (!date || !status) {
+      setError("Please fill all fields.");
+      return;
+    }
+    const res = await axios.post(`${BACK}/user/mark`, {
+      student: id,
+      date,
+      status,
+    });
+    if (res.data && (res.data.message || res.status === 201)) {
       toast.success("Attendance marked successfully");
       setMessage("Attendance marked successfully");
-      setStudent("");
       setDate("");
       setStatus("");
       setTimeout(() => {
         navigate("/userattendance");
-      }, 1200); // 1.2 seconds so user sees the toast
-    } catch (err) {
-      setError(err.response?.data?.error || "Error marking attendance");
+      }, 1200);
+    } else {
+      setError("Attendance not marked. Try again.");
     }
-  };
+  } catch (err) {
+    setError(err.response?.data?.error || err.message || "Error marking attendance");
+  }
+};
   return (
     
     <div
@@ -66,9 +76,10 @@ const MarkAttendance = () => {
           gap: "1.2rem",
         }}
       >
-        <h2 style={{ color: "#fff", textAlign: "center", marginBottom: 8 }}>Mark Attendance</h2>
+        <h1 style={{ color: "#fff", textAlign: "center", marginBottom: 8, fontSize: "1.5rem" }}>Mark Attendance</h1>
         <input
-          type="text"
+          type="password"
+          readOnly
           placeholder="Student ID"
           value={id}
           onChange={e => setStudent(e.target.value)}
@@ -81,19 +92,22 @@ const MarkAttendance = () => {
             marginBottom: 4,
           }}
         />
-        <input
-          type="date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
-          required
-          style={{
-            padding: "0.8rem 1rem",
-            borderRadius: 8,
-            border: "none",
-            fontSize: "1rem",
-            marginBottom: 4,
-          }}
-        />
+      <input
+  type="date"
+  value={date}
+  onChange={e => setDate(e.target.value)}
+  required
+  style={{
+    padding: "0.8rem 1rem",
+    borderRadius: 8,
+    border: "none",
+    fontSize: "1rem",
+    marginBottom: 4,
+    minWidth: 0,
+    width: "100%",
+    maxWidth: "100%",
+  }}
+/>
         <select
           value={status}
           onChange={e => setStatus(e.target.value)}

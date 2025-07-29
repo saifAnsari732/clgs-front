@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {BACK} from "./Util"; // Adjust the import path as needed
+
 
 const AttendanceDashboard = () => {
   const [attendance, setAttendance] = useState([]);
@@ -12,7 +12,7 @@ const AttendanceDashboard = () => {
   useEffect(() => {
  const fetchAttendance = async () => {
       try {
-        const response = await axios.get(`${BACK}/user/${s}`);
+        const response = await axios.get(`http://localhost:3000/api/v1/user/${s}`);
         console.log(response.data);
         setAttendance(response.data);
       } catch (error) {

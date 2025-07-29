@@ -2,51 +2,54 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { BACK } from "./Util"; // Adjust the import path as needed
+import { BACK } from "./Util";
+
 const MarkAttendance = () => {
   const navigate = useNavigate();
-  const [student, setStudent] = useState("");
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("");
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const id = localStorage.getItem("profile-id");
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setMessage("");
-  setError("");
-  try {
-    if (!id) {
-      setError("Student ID not found. Please login again.");
-      return;
-    }
-    if (!date || !status) {
-      setError("Please fill all fields.");
-      return;
-    }
-    const res = await axios.post(`${BACK}/user/mark`, {
-      student: id,
-      date,
-      status,
-    });
-    if (res.data && (res.data.message || res.status === 201)) {
-      toast.success("Attendance marked successfully");
-      setMessage("Attendance marked successfully");
-      setDate("");
-      setStatus("");
-      setTimeout(() => {
-        navigate("/userattendance");
-      }, 1200);
-    } else {
-      setError("Attendance not marked. Try again.");
-    }
-  } catch (err) {
-    setError(err.response?.data?.error || err.message || "Error marking attendance");
-  }
-};
-  return (
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
     
+    try {
+     
+      const res = await axios.post(`${BACK}/user/mark`, {
+        student: id,
+        date:today,
+        status,
+      });
+
+      if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
+        toast.success("Attendance marked successfully");
+        setDate("");
+        setStatus("");
+        setTimeout(() => {
+          navigate("/userattendance");
+        }, 1000);
+      } else {
+        setError("Attendance not marked. Please try again.");
+      }
+    } catch (err) {
+      console.error("Attendance marking error:", err);
+      setError(
+        err.response?.data?.error || 
+        err.response?.data?.message || 
+        "Failed to mark attendance. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+const today = new Date().toISOString().split("T")[0];
+console.log(today);
+  return (
     <div
       style={{
         minHeight: "100vh",
@@ -57,7 +60,6 @@ const MarkAttendance = () => {
         padding: "2rem 1rem",
       }}
     >
-      
       <Toaster position="top-center" reverseOrder={false} />
       <form
         onSubmit={handleSubmit}
@@ -65,9 +67,9 @@ const MarkAttendance = () => {
           background: "rgba(255,255,255,0.13)",
           borderRadius: 24,
           boxShadow: "0 8px 32px 0 rgba(31,38,135,0.15)",
-          padding: "2.5rem 2rem 2rem 2rem",
-          minWidth: 320,
-          maxWidth: 400,
+          padding: "2.5rem 2rem",
+          minWidth: 280,
+          maxWidth: "90%",
           width: "100%",
           backdropFilter: "blur(8px)",
           border: "1.5px solid rgba(255,255,255,0.18)",
@@ -76,48 +78,56 @@ const MarkAttendance = () => {
           gap: "1.2rem",
         }}
       >
-        <h1 style={{ color: "#fff", textAlign: "center", marginBottom: 8, fontSize: "1.5rem" }}>Mark Attendance</h1>
+        <h1 style={{ color: "#fff", textAlign: "center", marginBottom: 8, fontSize: "1.5rem" }}>
+          Mark Attendance
+        </h1>
+        
         <input
-          type="password"
+          type="text"
           readOnly
           placeholder="Student ID"
-          value={id}
-          onChange={e => setStudent(e.target.value)}
-          required
+          value={id || "Not available"}
           style={{
             padding: "0.8rem 1rem",
             borderRadius: 8,
             border: "none",
             fontSize: "1rem",
             marginBottom: 4,
+            backgroundColor: "rgba(255,255,255,0.8)",
           }}
         />
-      <input
-  type="date"
-  value={date}
-  onChange={e => setDate(e.target.value)}
-  required
-  style={{
-    padding: "0.8rem 1rem",
-    borderRadius: 8,
-    border: "none",
-    fontSize: "1rem",
-    marginBottom: 4,
-    minWidth: 0,
-    width: "100%",
-    maxWidth: "100%",
-  }}
-/>
+        
+        <div style={{ position: "relative" }}>
+          <input
+            type="date"
+            value={today}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            style={{
+              padding: "0.8rem 1rem",
+              borderRadius: 8,
+              border: "none",
+              fontSize: "1rem",
+              width: "100%",
+              boxSizing: "border-box",
+              backgroundColor: "rgba(255,255,255,0.8)",
+              WebkitAppearance: "none", // For better mobile styling
+            }}
+            max={new Date().toISOString().split("T")[0]} // Restrict to today or past dates
+          />
+        </div>
+        
         <select
           value={status}
-          onChange={e => setStatus(e.target.value)}
+          onChange={(e) => setStatus(e.target.value)}
           required
           style={{
             padding: "0.8rem 1rem",
             borderRadius: 8,
             border: "none",
             fontSize: "1rem",
-            marginBottom: 4,
+            backgroundColor: "rgba(255,255,255,0.8)",
+            WebkitAppearance: "none", // For better mobile styling
           }}
         >
           <option value="">Select Status</option>
@@ -126,26 +136,40 @@ const MarkAttendance = () => {
           <option value="Late">Late</option>
           <option value="Excused">Excused</option>
         </select>
+        
         <button
           type="submit"
+          disabled={isSubmitting}
           style={{
             padding: "0.9rem 0",
             borderRadius: 8,
             border: "none",
-            background: "linear-gradient(90deg, #43cea2 0%, #185a9d 100%)",
+            background: isSubmitting 
+              ? "linear-gradient(90deg, #cccccc 0%, #999999 100%)" 
+              : "linear-gradient(90deg, #43cea2 0%, #185a9d 100%)",
             color: "#fff",
             fontWeight: "bold",
             fontSize: "1.1rem",
-            cursor: "pointer",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
             marginTop: 8,
             boxShadow: "0 4px 16px rgba(67,206,162,0.2)",
-            transition: "transform 0.2s, box-shadow 0.2s",
+            transition: "all 0.2s",
           }}
         >
-          Mark Attendance
+          {isSubmitting ? "Processing..." : "Mark Attendance"}
         </button>
-        {message && <div style={{ color: "#43cea2", textAlign: "center" }}>{message}</div>}
-        {error && <div style={{ color: "#ff512f", textAlign: "center" }}>{error}</div>}
+        
+        {error && (
+          <div style={{ 
+            color: "#ff512f", 
+            textAlign: "center",
+            padding: "0.5rem",
+            backgroundColor: "rgba(255,255,255,0.2)",
+            borderRadius: 8,
+          }}>
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );

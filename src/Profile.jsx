@@ -27,11 +27,11 @@ const Profile = () => {
           },
           withCredentials: true, // Ensure cookies are sent with the request
         });
+        setProfileData(response.data.userdata);
         localStorage.setItem("profile-image",response.data.userdata.image.url)
         localStorage.setItem("profile-id",response.data.userdata._id)
 
         // console.log("Profile data ",response.data.userdata._id);
-        setProfileData(response?.data?.userdata);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -323,7 +323,7 @@ const Profile = () => {
                     darkMode ? "text-green-500" : "text-purple-900"
                   } text-1xl`}
                 >
-                  Creater By : Saifuddin Ansari
+                  Creater By : Saif Ansari
                 </p>
 
                 <div className="flex space-x-6 space-y-2">
@@ -337,11 +337,7 @@ const Profile = () => {
                   >
                     Attendance:
                   </button>
-                  <p
-                    className={`text-2xl  border-x-slate-950  ${
-                      darkMode ? "text-gray-300" : "text-gray-700"
-                    }`}
-                  ></p>
+                 
                 </div>
               </div>
             </div>

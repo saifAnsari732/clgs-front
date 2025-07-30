@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { BACK } from "./Util";
+import { useEffect } from "react";
 
 const MarkAttendance = () => {
   const navigate = useNavigate();
@@ -11,21 +13,32 @@ const MarkAttendance = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("profile-id");
+  console.log("token mark atten", token);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-    
+
     try {
-     
+
       const res = await axios.post(`${BACK}/user/mark`, {
         student: id,
-        date:today,
+        date: today,
         status,
       });
-
+      if (!token) {
+       
+        toast.error("User Not logged in");
+       setTimeout(() => {
+        
+         navigate("/");
+       }, 1500);
+        return;
+      }
       if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
         toast.success("Attendance marked successfully");
         setDate("");
@@ -39,16 +52,16 @@ const MarkAttendance = () => {
     } catch (err) {
       console.error("Attendance marking error:", err);
       setError(
-        err.response?.data?.error || 
-        err.response?.data?.message || 
+        err.response?.data?.error ||
+        err.response?.data?.message ||
         "Failed to mark attendance. Please try again."
       );
     } finally {
       setIsSubmitting(false);
     }
   };
-const today = new Date().toISOString().split("T")[0];
-console.log(today);
+  const today = new Date().toISOString().split("T")[0];
+  console.log(today);
   return (
     <div
       style={{
@@ -81,12 +94,12 @@ console.log(today);
         <h1 style={{ color: "#fff", textAlign: "center", marginBottom: 8, fontSize: "1.5rem" }}>
           Mark Attendance
         </h1>
-        
+
         <input
-          type="text"
+          type="password"
           readOnly
           placeholder="Student ID"
-          value={id || "Not available"}
+          value={token ? id : "NO ID PROVIDE"}
           style={{
             padding: "0.8rem 1rem",
             borderRadius: 8,
@@ -96,7 +109,7 @@ console.log(today);
             backgroundColor: "rgba(255,255,255,0.8)",
           }}
         />
-        
+
         <div style={{ position: "relative" }}>
           <input
             type="date"
@@ -116,7 +129,7 @@ console.log(today);
             max={new Date().toISOString().split("T")[0]} // Restrict to today or past dates
           />
         </div>
-        
+
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
@@ -136,7 +149,7 @@ console.log(today);
           <option value="Late">Late</option>
           <option value="Excused">Excused</option>
         </select>
-        
+
         <button
           type="submit"
           disabled={isSubmitting}
@@ -144,8 +157,8 @@ console.log(today);
             padding: "0.9rem 0",
             borderRadius: 8,
             border: "none",
-            background: isSubmitting 
-              ? "linear-gradient(90deg, #cccccc 0%, #999999 100%)" 
+            background: isSubmitting
+              ? "linear-gradient(90deg, #cccccc 0%, #999999 100%)"
               : "linear-gradient(90deg, #43cea2 0%, #185a9d 100%)",
             color: "#fff",
             fontWeight: "bold",
@@ -158,10 +171,10 @@ console.log(today);
         >
           {isSubmitting ? "Processing..." : "Mark Attendance"}
         </button>
-        
+
         {error && (
-          <div style={{ 
-            color: "#ff512f", 
+          <div style={{
+            color: "#ff512f",
             textAlign: "center",
             padding: "0.5rem",
             backgroundColor: "rgba(255,255,255,0.2)",

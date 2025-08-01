@@ -27,7 +27,7 @@ const MarkAttendance = () => {
 
       const res = await axios.post(`${BACK}/user/mark`, {
         student: id,
-        date: today,
+        date:today,
         status,
       });
       if (!token) {
@@ -52,7 +52,8 @@ const MarkAttendance = () => {
     } catch (err) {
       console.error("Attendance marking error:", err);
       setError(
-        err.response?.data?.error ||
+        toast.error(  err.response?.data?.error )&&
+      
         err.response?.data?.message ||
         "Failed to mark attendance. Please try again."
       );

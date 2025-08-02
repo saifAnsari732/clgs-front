@@ -227,6 +227,9 @@ const Home = () => {
               >
                 User Logout
               </button>
+              <button onClick={() => navigate("/profile")} className=" bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 px-14 rounded-full mt-3">
+                Profile
+              </button>
             </div>
           ) : (
             <div

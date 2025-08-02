@@ -57,7 +57,7 @@ const Profile = () => {
   //   };
   //   fetchAttendance();
   // }, []);
-
+  const attendanceCount = localStorage.getItem("attendance-count");
   return (
     <div>
       <div
@@ -119,16 +119,15 @@ const Profile = () => {
                     src={profileData?.image?.url}
                     alt="Profile"
                   />
-                  <h1 className='text-end text-2xl '>gg</h1>
-                 
+                  <div className="absolute bottom-0 right-5 bg-purple-500 text-white text-lg font-semibold px-3 py-3 rounded-bl-lg">{attendanceCount} </div>
                 </div>
               </div>
 
               {/* Profile Details Section */}
               {/* <h1 className='text-end'>b</h1> */}
 
-              <div className="md:w-2/3 p-6">
-                <div className="space-y-4">
+              <div className="md:w-2/3 px-2 md:p-6">
+                <div className="">
                   <div>
                     <h2
                       className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"

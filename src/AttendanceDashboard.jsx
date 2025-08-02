@@ -4,23 +4,24 @@ import {BACK} from "./Util";
 
 const AttendanceDashboard = () => {
   const [attendance, setAttendance] = useState([]);
-
-  // For demo, you can use a hardcoded studentId or pass as prop
-  // const s = studentId || "685ccdf767fc941df0378fab";
+  // Get the student ID from local storage 
   const s = localStorage.getItem("profile-id");
 
   useEffect(() => {
  const fetchAttendance = async () => {
       try {
         const response = await axios.get(`${BACK}/user/${s}`);
-        console.log(response.data);
-        setAttendance(response.data);
+        // console.log(response.data.records.length);
+        setAttendance(response.data.records);
+        localStorage.setItem("attendance-count", response.data.records.length);
+
       } catch (error) {
         console.error("Error fetching attendance data:", error);
       }
     }
     fetchAttendance();
   }, [s]);
+  
 const imag=localStorage.getItem("profile-image")
   return (
     <div
@@ -53,19 +54,53 @@ const imag=localStorage.getItem("profile-image")
         <div className="w-[300px] ml-20">
           <img src={imag} alt="Student" className="h-[300px] flex items-center justify-center rounded-full sm:ml-52 w-[200px]" />
         </div>
-        <h2
-          style={{
-            color: "#fff",
-            fontWeight: 700,
-            fontSize: "2.2rem",
-            marginBottom: 18,
-            textAlign: "center",
-            letterSpacing: 1,
-            textShadow: "10 12px 8px rgba(0,0,0,0.3)",
-          }}
-        >
-          Attendance Records
-        </h2>
+       
+        {/* three box display P , A , L */}
+        <div className="flex justify-between items-center mt-6 mb-4">
+          <div
+            style={{
+              background: "rgba(255,255,255,0.1)",
+              padding: "1rem 1.5rem",
+              borderRadius: 12,
+              color: "#43cea2",
+              fontWeight: 600,
+              fontSize: "1.2rem",
+              textAlign: "center",
+
+            }}
+          >
+            Present {attendance.filter(record => record.status === "Present").length}
+          </div>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.1)",
+              padding: "1rem 1.5rem",
+              borderRadius: 12,
+              color: "#ff512f",
+              fontWeight: 600,
+              fontSize: "1.2rem",
+              textAlign: "center",
+
+            }}
+          >
+            Absent {attendance.filter(record => record.status === "Absent").length}
+          </div>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.1)",
+              padding: "1rem 1.5rem",
+              borderRadius: 12,
+              color: "#185a9d",
+              fontWeight: 600,
+              fontSize: "1.2rem",
+              textAlign: "center",
+            }}
+          >
+            Late {attendance.filter(record => record.status === "Late").length}
+          </div>
+
+        </div>
+
         <div style={{ overflowX: "auto" }}>
           <table
             style={{

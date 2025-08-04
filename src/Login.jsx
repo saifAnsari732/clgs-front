@@ -32,7 +32,9 @@ const Login = () => {
         withCredentials: true, // Ensure cookies are sent with the request
 
       });
-
+      // date set local
+      localStorage.setItem("date", response.data.date);
+   console.log("log", response.data.date);
       // Handle successful login
       toast.success("Login successful!");
       setTimeout(() => {

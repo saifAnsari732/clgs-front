@@ -6,12 +6,15 @@ const AttendanceDashboard = () => {
   const [attendance, setAttendance] = useState([]);
   // Get the student ID from local storage 
   const s = localStorage.getItem("profile-id");
+  const imag = localStorage.getItem("profile-image");
 
   useEffect(() => {
  const fetchAttendance = async () => {
       try {
         const response = await axios.get(`${BACK}/user/${s}`);
-        // console.log(response.data.records.length);
+        // console.log("recordd",response.data.records);
+       
+      
         setAttendance(response.data.records);
         localStorage.setItem("attendance-count", response.data.records.length);
 
@@ -21,8 +24,16 @@ const AttendanceDashboard = () => {
     }
     fetchAttendance();
   }, [s]);
+  // filter date not dublicate date this logdate
   
-const imag=localStorage.getItem("profile-image")
+  
+
+
+ 
+ 
+ 
+ 
+ 
   return (
     <div
     
@@ -52,15 +63,15 @@ const imag=localStorage.getItem("profile-image")
       >
         {/* small image */}
         <div className="w-[300px] ml-20">
-          <img src={imag} alt="Student" className="h-[300px] flex items-center justify-center rounded-full sm:ml-52 w-[200px]" />
+          <img src={imag} alt="Student" className="h-[250px] flex items-center justify-center rounded-full sm:ml-52 w-[200px]" />
         </div>
        
         {/* three box display P , A , L */}
-        <div className="flex justify-between items-center mt-6 mb-4">
+        <div className="flex justify-between items-center mt-6 mb-4 gap-1">
           <div
             style={{
               background: "rgba(255,255,255,0.1)",
-              padding: "1rem 1.5rem",
+              padding: "0.5rem 1.5rem",
               borderRadius: 12,
               color: "#43cea2",
               fontWeight: 600,
@@ -74,7 +85,7 @@ const imag=localStorage.getItem("profile-image")
           <div
             style={{
               background: "rgba(255,255,255,0.1)",
-              padding: "1rem 1.5rem",
+              padding: "0.5rem 1.5rem",
               borderRadius: 12,
               color: "#ff512f",
               fontWeight: 600,
@@ -88,7 +99,7 @@ const imag=localStorage.getItem("profile-image")
           <div
             style={{
               background: "rgba(255,255,255,0.1)",
-              padding: "1rem 1.5rem",
+              padding: "0.5rem 1.5rem",
               borderRadius: 12,
               color: "#185a9d",
               fontWeight: 600,
@@ -156,6 +167,7 @@ const imag=localStorage.getItem("profile-image")
                     }}
                   >
                     <td style={{ color: "#222", padding: "0.9rem", fontWeight: 500 }}>
+                      {/* filter unique date */}
                       {new Date(record.date).toLocaleDateString()}
                     </td>
                     <td

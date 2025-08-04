@@ -8,14 +8,16 @@ import { useEffect } from "react";
 
 const MarkAttendance = () => {
   const navigate = useNavigate();
-  const [date, setDate] = useState("");
   const [status, setStatus] = useState("");
+  const [date, setDate] = useState("");
+  const [mk, setmk] = useState([]);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const token = localStorage.getItem("authToken");
-  const id = localStorage.getItem("profile-id");
-  console.log("token mark atten", token);
+  const id = localStorage.getItem("profile-id")
+
+    
 
 
   const handleSubmit = async (e) => {
@@ -27,9 +29,12 @@ const MarkAttendance = () => {
 
       const res = await axios.post(`${BACK}/user/mark`, {
         student: id,
-        date:today,
+        date:formattedDate,
         status,
       });
+  
+      
+
       if (!token) {
        
         toast.error("User Not logged in");
@@ -61,8 +66,18 @@ const MarkAttendance = () => {
       setIsSubmitting(false);
     }
   };
-  const today = new Date().toISOString().split("T")[0];
-  console.log(today);
+// date formateting for today's date
+  const today = new Date().toLocaleString("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).split("T")[0];
+  // console.log("mrktd",today);
+  // Format date to YYYY-MM-DD for input type="date"
+  const formattedDate = today.split("-").reverse().join("-");
+
+
+
   return (
     <div
       style={{
@@ -148,11 +163,12 @@ const MarkAttendance = () => {
           <option value="Present">Present</option>
           <option value="Absent">Absent</option>
           <option value="Late">Late</option>
-          <option value="Excused">Excused</option>
         </select>
 
         <button
+       
           type="submit"
+          // disabled={true}
           disabled={isSubmitting}
           style={{
             padding: "0.9rem 0",

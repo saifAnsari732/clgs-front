@@ -30,14 +30,25 @@ const Home = () => {
   }
 
 
+  const authToken = localStorage.getItem("authToken");
    useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
     if (authToken) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   }, []);
+
+  const handleprofile= async()=>{
+    if(!authToken){
+      alert("Student Not LogedIn")
+     toast.success("Please LogedIn First")
+    }else{
+      navigate("/profile")
+    }
+  }
+
+
 
   return (
     <div
@@ -56,7 +67,7 @@ const Home = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          background: "rgba(255,255,255,0.08)",
+          background: "rgba(255,255,255,0.09)",
           backdropFilter: "blur(6px)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
           position: "sticky",
@@ -78,42 +89,10 @@ const Home = () => {
           <span style={{ color: "#fff" }}>Ease</span>
         </span>
         <div style={{ display: "flex", gap: "1.5rem" }}>
-          <button
-            onClick={() => navigate("/#")}
-            style={{
-              background: "none",
-              border: "none",
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: "1rem",
-              cursor: "pointer",
-              padding: "0.5rem 1.2rem",
-              borderRadius: "20px",
-              transition: "background 0.2s, color 0.2s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "#43cea2")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "none")}
-          >
-            User
-          </button>
-          <button
-            onClick={() => navigate("/adinlogin")}
-            style={{
-              background: "none",
-              border: "none",
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: "1rem",
-              cursor: "pointer",
-              padding: "0.5rem 1.2rem",
-              borderRadius: "20px",
-              transition: "background 0.2s, color 0.2s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "#ff512f")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "none")}
-          >
-            Admin
-          </button>
+       <button onClick={handleprofile} className=" bg-gradient-to-r from-green-300 to-teal-600 text-black font-bold py-3 px-14 rounded-full ">
+                Profile
+              </button>
+          
         </div>
       </nav>
 
@@ -227,9 +206,7 @@ const Home = () => {
               >
                 User Logout
               </button>
-              <button onClick={() => navigate("/profile")} className=" bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 px-14 rounded-full mt-3">
-                Profile
-              </button>
+             
             </div>
           ) : (
             <div
@@ -290,6 +267,7 @@ const Home = () => {
               </button>
             </div>
           )}
+           
           <div
             style={{
               background: "rgba(255,255,255,0.13)",
@@ -349,6 +327,7 @@ const Home = () => {
           </div>
 
         </div>
+        
       </div>
 
       {/* Footer */}

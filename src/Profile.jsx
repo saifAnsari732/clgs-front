@@ -39,24 +39,8 @@ const Profile = () => {
     fetchdata();
   }, []);
 
-  // attendence fetch  code
-  // useEffect(() => {
-  //   const fetchAttendance = async () => {
-  //     try {
-  //       const response = await axios.get(`${BACK}/user/data`, {
-  //         headers: {
-  //           Authorization: `Bearer ${toke}`,
-  //         },
-  //         withCredentials: true,
-  //       });
+ 
 
-  //        // Assuming response.data is an array of attendance records
-  //     } catch (error) {
-  //       console.error("Error fetching attendance data:", error);
-  //     }
-  //   };
-  //   fetchAttendance();
-  // }, []);
   const attendanceCount = localStorage.getItem("attendance-count");
   return (
     <div>

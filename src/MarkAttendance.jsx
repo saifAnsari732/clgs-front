@@ -10,14 +10,22 @@ const MarkAttendance = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState("");
   const [date, setDate] = useState("");
-  const [mk, setmk] = useState([]);
+  const [mk, setmk] = useState();
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const token = localStorage.getItem("authToken");
-  const id = localStorage.getItem("profile-id")
-
-    
+  const id = localStorage.getItem("profile-id");
+  
+  console.log("local get",mk);
+  useEffect(() => {
+    const dt = localStorage.getItem("unicdates");
+    if (dt) {
+      const last = dt.split("/");
+      let newFormat = `${last[1]}/${last[0]}/${last[2]}`;
+      setmk(newFormat);
+    }
+  }, [ mk]);
 
 
   const handleSubmit = async (e) => {
@@ -26,39 +34,41 @@ const MarkAttendance = () => {
     setIsSubmitting(true);
 
     try {
-
-      const res = await axios.post(`${BACK}/user/mark`, {
-        student: id,
-        date:formattedDate,
-        status,
-      });
-  
-      
-
       if (!token) {
-       
         toast.error("User Not logged in");
-       setTimeout(() => {
-        
-         navigate("/");
-       }, 1500);
+        setTimeout(() =>  navigate("/"),1500);
         return;
       }
-      if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
+
+      if (formattedDate.includes(mk)) {
+        toast.error("Attendance already marked");
+        setIsSubmitting(false)
+        return;
+      }
+      const res = await axios.post(`${BACK}/user/mark`, {
+        student: id,
+        date: formattedDate,
+        status,
+      });
+
+       if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
         toast.success("Attendance marked successfully");
         setDate("");
         setStatus("");
         setTimeout(() => {
           navigate("/userattendance");
         }, 1000);
-      } else {
+        return
+      }
+
+      else {
         setError("Attendance not marked. Please try again.");
       }
     } catch (err) {
       console.error("Attendance marking error:", err);
       setError(
-        toast.error(  err.response?.data?.error )&&
-      
+        toast.error(err.response?.data?.error) &&
+
         err.response?.data?.message ||
         "Failed to mark attendance. Please try again."
       );
@@ -66,15 +76,15 @@ const MarkAttendance = () => {
       setIsSubmitting(false);
     }
   };
-// date formateting for today's date
+
+
   const today = new Date().toLocaleString("en-CA", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).split("T")[0];
-  // console.log("mrktd",today);
-  // Format date to YYYY-MM-DD for input type="date"
-  const formattedDate = today.split("-").reverse().join("-");
+  });
+  const formattedDate = today.split("-").reverse().join("/");
+  console.log("compare date",formattedDate);
 
 
 
@@ -166,7 +176,7 @@ const MarkAttendance = () => {
         </select>
 
         <button
-       
+
           type="submit"
           // disabled={true}
           disabled={isSubmitting}

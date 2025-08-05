@@ -13,8 +13,6 @@ const AttendanceDashboard = () => {
       try {
         const response = await axios.get(`${BACK}/user/${s}`);
         // console.log("recordd",response.data.records);
-       
-      
         setAttendance(response.data.records);
         localStorage.setItem("attendance-count", response.data.records.length);
 
@@ -24,15 +22,24 @@ const AttendanceDashboard = () => {
     }
     fetchAttendance();
   }, [s]);
-  // filter date not dublicate date this logdate
-  
-  
+  // filter date not dublicate date this logdate formate is "dd/mm/yyyy"
+ 
 
+    const uniqueDates = attendance.reduce((acc, record) => {
+      const date = new Date(record.date).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+      if (!acc.includes(date)) {
+        acc.push(date);
+      }
+      return acc;
+    }, []);
+       localStorage.setItem("unicdates",uniqueDates)
+   
 
- 
- 
- 
- 
+     console.log("uniqueDates", uniqueDates);
  
   return (
     <div
@@ -167,8 +174,13 @@ const AttendanceDashboard = () => {
                     }}
                   >
                     <td style={{ color: "#222", padding: "0.9rem", fontWeight: 500 }}>
-                      {/* filter unique date */}
-                      {new Date(record.date).toLocaleDateString()}
+                     {/* format date dd/mm/yyyy */}
+
+                      {new Date(record.date).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
                     </td>
                     <td
                       style={{

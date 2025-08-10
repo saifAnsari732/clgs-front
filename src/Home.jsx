@@ -121,7 +121,7 @@ const Home = () => {
             textAlign: "center",
           }}
         >
-          Student Attendance System
+           Attendance System
         </h1>
         <p
           style={{
@@ -185,14 +185,15 @@ const Home = () => {
                 Login as a student to mark and view your attendance.
               </p>
               <button
+              className=" bg-gradient-to-r from-sky-300 to-teal-600 text-black font-bold py-3 px-14 rounded-full "
                 onClick={handlelogout}
                 style={{
                   padding: "0.7rem 2rem",
                   fontSize: "1.1rem",
                   borderRadius: "30px",
                   border: "none",
-                  background: "linear-gradient(90deg, #43cea2 0%, #185a9d 100%)",
-                  color: "#fff",
+                  // backgroundColor: "green",
+                  // color: "#fff",
                   fontWeight: "bold",
                   boxShadow: "0 4px 16px rgba(67,206,162,0.2)",
                   cursor: "pointer",

@@ -7,6 +7,8 @@ import AttendanceDashboard from './AttendanceDashboard';
 import AdminLogin from './AdminLogin';
 import Home from './Home';
 import MarkAttendance from './MarkAttendance';
+import { Passwordreset } from './Passwordreset';
+import { Forgatpassword } from './Forgatpassword';
 const App = () => {
   // set token localstorese
  const toke=localStorage.getItem('authToken'); 
@@ -24,6 +26,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/userattendance" element={<AttendanceDashboard />} />
         <Route path="/markattendance" element={<MarkAttendance />} />
+        <Route path="/password-reset" element={<Passwordreset />} />
+        <Route path="/forgatpassword/:id/:token" element={<Forgatpassword />} />
 
 
       </Routes>

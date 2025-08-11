@@ -29,13 +29,8 @@ const handleSubmit = async (e) => {
         setMessage("Password reset link sent successfully");
         
     } catch (error) {
-        // Handle axios errors
-        const errorMsg = error.response?.data?.msg 
-            || error.message 
-            || "Failed to send reset link";
-            
-        toast.error(errorMsg);
-        setMessage(errorMsg);
+        toast.error(error);
+        setMessage(error);
     }
 
 

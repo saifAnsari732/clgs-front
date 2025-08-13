@@ -69,12 +69,12 @@ const AttendanceDashboard = () => {
         }}
       >
         {/* small image */}
-        <div className="w-[300px] ml-20">
-          <img src={imag} alt="Student" className="h-[250px] flex items-center justify-center rounded-full sm:ml-52 w-[200px]" />
+        <div className=" flex items-center justify-center  mb-4">
+          <img src={imag} alt="Student" className="h-[250px]  rounded-full  w-[200px]" />
         </div>
        
         {/* three box display P , A , L */}
-        <div className="flex justify-between items-center mt-6 mb-4 gap-1">
+        <div className="flex justify-center items-center mt-6 mb-4 gap-1">
           <div
             style={{
               background: "rgba(255,255,255,0.1)",

@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Link, Links, useNavigate } from "react-router-dom";
 import { BACK } from "./Util";
 import "./style.css";
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -34,9 +35,11 @@ const Login = () => {
       });
       // date set local
       localStorage.setItem("date", response.data.date);
-   console.log("log", response.data.date);
+  //  console.log("log", response.data.date);
       // Handle successful login
-      toast.success("Login successful!");
+      toast.success("Login successful!",{
+        autoClose: 2000,
+      });
       setTimeout(() => {
         
         navigate("/profile");

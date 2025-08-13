@@ -103,7 +103,7 @@ const Profile = () => {
                     src={profileData?.image?.url}
                     alt="Profile"
                   />
-                  <div className="absolute bottom-0 right-5 bg-purple-500 text-white text-lg font-semibold px-3 py-3 rounded-bl-lg">{attendanceCount} </div>
+                  <div className="absolute bottom-0 right-5 border border-black text-black bg-slate-300 text-lg font-semibold px-6 py-3 rounded-full">{attendanceCount} </div>
                 </div>
               </div>
 

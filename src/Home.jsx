@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BACK } from "./Util";
 
 // toast
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 const Home = () => {
   // logout
@@ -22,8 +22,10 @@ const Home = () => {
       })
       toast.success("User logout Successfull..");
       console.log("saif ansari");
-      localStorage.removeItem("authToken");
+        localStorage.removeItem("authToken");
       setIsLoggedIn(false);
+    
+      
     } catch (error) {
       console.log(error);
     }
@@ -40,12 +42,16 @@ const Home = () => {
   }, []);
 
   const handleprofile= async()=>{
-    if(!authToken){
-      alert("Student Not LogedIn")
-     toast.success("Please LogedIn First")
-    }else{
+     if (!authToken) {
+      toast.error("Please log in first", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+    else{
       navigate("/profile")
     }
+
   }
 
 
@@ -89,7 +95,7 @@ const Home = () => {
           <span style={{ color: "#fff" }}>Ease</span>
         </span>
         <div style={{ display: "flex", gap: "1.5rem" }}>
-       <button onClick={handleprofile} className=" bg-gradient-to-r from-green-300 to-teal-600 text-black font-bold py-3 px-14 rounded-full ">
+       <button onClick={handleprofile} className=" bg-gradient-to-r from-green-300 to-teal-600 text-black font-bold py-3 px-8 rounded-full ">
                 Profile
               </button>
           

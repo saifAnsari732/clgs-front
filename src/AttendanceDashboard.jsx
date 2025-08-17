@@ -24,22 +24,23 @@ const AttendanceDashboard = () => {
   }, [s]);
   // filter date not dublicate date this logdate formate is "dd/mm/yyyy"
  
+  const uniqueDates = attendance.reduce((acc, record) => {
+  // Convert to Date object
+  const d = new Date(record.date);
 
-    const uniqueDates = attendance.reduce((acc, record) => {
-      const date = new Date(record.date).toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-      if (!acc.includes(date)) {
-        acc.push(date);
-      }
-      return acc;
-    }, []);
-       localStorage.setItem("unicdates",uniqueDates)
-   
+  // Format as YYYY-MM-DD
+  const formatted = d.toISOString().split("T")[0];
 
-     console.log("uniqueDates", uniqueDates);
+  if (!acc.includes(formatted)) {
+    acc.push(formatted);
+  }
+  return acc;
+}, []);
+
+localStorage.setItem("unicdates", uniqueDates);
+console.log("uniqueDates", uniqueDates);
+
+
  
   return (
     <div

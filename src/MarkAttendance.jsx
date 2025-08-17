@@ -10,22 +10,28 @@ const MarkAttendance = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState("");
   const [date, setDate] = useState("");
-  const [mk, setmk] = useState();
+  const [mk, setmk] = useState([]);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("profile-id");
+
+  const today = new Date().toISOString().split("T")[0];
+  console.log("compare date", today);  // e.g. "2025-08-17"
+  // const dt = localStorage.getItem("unicdates");
   
-  console.log("local get",mk);
+
+  console.log("local get", mk);
   useEffect(() => {
     const dt = localStorage.getItem("unicdates");
     if (dt) {
-      const last = dt.split("/");
-      let newFormat = `${last[1]}/${last[0]}/${last[2]}`;
-      setmk(newFormat);
+      // const last = dt.split("/");
+      // let newFormat = `${last[0]}/${last[1]}/${last[2]}`;
+      setmk(dt);
     }
-  }, [ mk]);
+  }, [mk]);
+
 
 
   const handleSubmit = async (e) => {
@@ -36,25 +42,34 @@ const MarkAttendance = () => {
     try {
       if (!token) {
         toast.error("User Not logged in");
-        setTimeout(() =>  navigate("/"),1500);
+        setTimeout(() => navigate("/"), 1500);
         return;
       }
 
-      if (formattedDate.includes(mk)) {
+      if ( mk.includes(today)) {
         toast.error("Attendance already marked");
-        setIsSubmitting(false)
+        setIsSubmitting(false);
         return;
+      }else{
+        console.log("making atten error");
       }
       const res = await axios.post(`${BACK}/user/mark`, {
         student: id,
-        date: formattedDate,
-        status,
+        date: today,
+        status: status,
+      }, {
+
+        headers: {
+          "Content-Type": "application/json"
+        }
       });
 
-       if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
+      // console.log("response", res);
+      if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
         toast.success("Attendance marked successfully");
         setDate("");
         setStatus("");
+
         setTimeout(() => {
           navigate("/userattendance");
         }, 1000);
@@ -65,27 +80,14 @@ const MarkAttendance = () => {
         setError("Attendance not marked. Please try again.");
       }
     } catch (err) {
-      console.error("Attendance marking error:", err);
-      setError(
-        toast.error(err.response?.data?.error) &&
-
-        err.response?.data?.message ||
-        "Failed to mark attendance. Please try again."
-      );
+      console.error("Attendance marking error:", err.response?.data || err.message);
+      toast.error(err.response?.data?.message || "Error marking attendance. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-
-  const today = new Date().toLocaleString("en-CA", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  const formattedDate = today.split("-").reverse().join("/");
-  console.log("compare date",formattedDate);
-
+ 
 
 
   return (

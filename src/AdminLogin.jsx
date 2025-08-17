@@ -21,7 +21,7 @@ const AdminLogin = () => {
       toast.success("Admin login successful");
       setTimeout(() => {
         navigate("/markattendance");
-      }, 1000);
+      }, 1500);
     }
     else{
         setError("Admin not found");

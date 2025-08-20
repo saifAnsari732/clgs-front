@@ -23,17 +23,22 @@ const Login = () => {
 
 // current location compare
  const handlelocation=()=>{ 
-    navigator.geolocation.getCurrentPosition((position) => {
+  if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position) => {
       const latiiii = position.coords.latitude
       const longiiiii = position.coords.longitude
        localStorage.setItem("leti",latiiii)
        localStorage.setItem("longi",longiiiii)
       
       
-    }, (err) => {
+    }
+    // eslint-disable-next-line no-unused-vars
+    , (err) => {
       toast.error("Location Not Found")
-      console.log(err.message);
+      setLoading(false)
+      return
     })
+  }
  }
 
   const handleSubmit = async (e) => {

@@ -13,28 +13,35 @@ const MarkAttendance = () => {
   const [mk, setmk] = useState([]);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [latitud, setletitud] = useState("")
+  const [longitud, setlongitud] = useState("")
+  const [tru, setfalse] = useState(false)
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("profile-id");
 
   const today = new Date().toISOString().split("T")[0];
-  console.log("compare date", today);  // e.g. "2025-08-17"
+  // console.log("compare date", today);  // e.g. "2025-08-17"
   // const dt = localStorage.getItem("unicdates");
-  
 
-  console.log("local get", mk);
+
+  // console.log("local get", mk);
   useEffect(() => {
-    const dt = localStorage.getItem("unicdates");
+    const dt = localStorage.getItem("unicdate");
     if (dt) {
-      // const last = dt.split("/");
-      // let newFormat = `${last[0]}/${last[1]}/${last[2]}`;
       setmk(dt);
     }
   }, [mk]);
 
+  // lati 26.8828672,  80.9566208
+ 
+  
+
+
 
 
   const handleSubmit = async (e) => {
+       let lati = 26.8828672
+       let longi = 80.9566208
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
@@ -45,12 +52,21 @@ const MarkAttendance = () => {
         setTimeout(() => navigate("/"), 1500);
         return;
       }
+const f=localStorage.getItem("leti")
+const s=localStorage.getItem("longi")
 
-      if ( mk.includes(today)) {
+        if (f==lati) {
+        console.log("yes");
+        toast.error("Please get your current location first")
+        setIsSubmitting(false)
+        return
+      }
+
+      if (mk.includes(today)) {
         toast.error("Attendance already marked");
         setIsSubmitting(false);
         return;
-      }else{
+      } else {
         console.log("making atten error");
       }
       const res = await axios.post(`${BACK}/user/mark`, {
@@ -87,7 +103,7 @@ const MarkAttendance = () => {
     }
   };
 
- 
+
 
 
   return (
@@ -159,6 +175,7 @@ const MarkAttendance = () => {
         </div>
 
         <select
+
           value={status}
           onChange={(e) => setStatus(e.target.value)}
           required
@@ -178,9 +195,8 @@ const MarkAttendance = () => {
         </select>
 
         <button
-
+          // onClick={handlelocation}
           type="submit"
-          // disabled={true}
           disabled={isSubmitting}
           style={{
             padding: "0.9rem 0",
@@ -197,6 +213,7 @@ const MarkAttendance = () => {
             boxShadow: "0 4px 16px rgba(67,206,162,0.2)",
             transition: "all 0.2s",
           }}
+
         >
           {isSubmitting ? "Processing..." : "Mark Attendance"}
         </button>

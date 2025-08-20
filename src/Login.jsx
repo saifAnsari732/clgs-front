@@ -21,6 +21,21 @@ const Login = () => {
     }));
   };
 
+// current location compare
+ const handlelocation=()=>{ 
+    navigator.geolocation.getCurrentPosition((position) => {
+      const latiiii = position.coords.latitude
+      const longiiiii = position.coords.longitude
+       localStorage.setItem("leti",latiiii)
+       localStorage.setItem("longi",longiiiii)
+      
+      
+    }, (err) => {
+      toast.error("Location Not Found")
+      console.log(err.message);
+    })
+ }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -128,6 +143,7 @@ const Login = () => {
             </div>
 
             <button
+              onClick={handlelocation}
               type="submit"
               disabled={loading}
               className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-bold text-lg shadow-md disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"

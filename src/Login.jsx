@@ -29,14 +29,13 @@ const Login = () => {
       const longiiiii = position.coords.longitude
        localStorage.setItem("leti",latiiii)
        localStorage.setItem("longi",longiiiii)
-      
-      
     }
     // eslint-disable-next-line no-unused-vars
     , (err) => {
-      toast.error("Location Not Found")
-      setLoading(false)
-      return
+      localStorage.removeItem("leti");
+      localStorage.removeItem("longi");
+      setLoading(false);
+      return;
     })
   }
  }
@@ -55,9 +54,7 @@ const Login = () => {
       });
       // date set local
       localStorage.setItem("date", response.data.date);
-  //  console.log("log", response.data.date);
-      // Handle successful login
-      toast.success("Login successful!",{
+      toast.success("Student Login successful!",{
         autoClose: 2000,
       });
       setTimeout(() => {

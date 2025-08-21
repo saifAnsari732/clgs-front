@@ -20,11 +20,11 @@ const MarkAttendance = () => {
   const id = localStorage.getItem("profile-id");
 
   const today = new Date().toISOString().split("T")[0];
-  console.log("compare date", today);  // e.g. "2025-08-17"
+  // console.log("compare date", today);  // e.g. "2025-08-17"
   // const dt = localStorage.getItem("unicdates");
 
 
-  console.log("local get", mk);
+  // console.log("local get", mk);
   useEffect(() => {
     const dt = localStorage.getItem("unicdates");
     if (dt) {
@@ -40,8 +40,9 @@ const MarkAttendance = () => {
 
 
   const handleSubmit = async (e) => {
-    let lati = 26.8828672
+    let lati = 26.8566528
     let longi = 80.9566208
+    // f 26.8566528 s 80.9435136
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
@@ -49,10 +50,9 @@ const MarkAttendance = () => {
     try {
       const f = localStorage.getItem("leti")
       const s = localStorage.getItem("longi")
-
-      if (f == lati) {
-        console.log("yes");
-        toast.error("Please get your current location first")
+      console.log("f", f, "s", s);
+      if (f != lati) {
+        toast.error("Please Enable current location.")
         setIsSubmitting(false)
         return
       }

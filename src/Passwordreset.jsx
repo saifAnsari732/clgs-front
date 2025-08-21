@@ -6,32 +6,32 @@ import axios from 'axios';
 export const Passwordreset = () => {
 
     const [email, setEmail] = useState('');
-const [message, setMessage] = useState("");
+    const [message, setMessage] = useState("");
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
-        setEmail('');   
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setEmail('');
         setMessage(true);
-    try {
-        // eslint-disable-next-line no-unused-vars
-        const response = await axios.post(
-            `${BACK}/user/sendpasswordlink`, 
-            { email },
-            {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-        );
+        try {
+            const response = await axios.post(
+                `${BACK}/user/sendpasswordlink`,
+                { email },
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+           
+            setMessage(false);
+            // Successful response (200-299 range)
+            toast.success("Password reset link sent successfully");
+            setMessage("Password reset link sent successfully");
 
-        setMessage(false);
-        // Successful response (200-299 range)
-        toast.success("Password reset link sent successfully");
-        setMessage("Password reset link sent successfully");
-        
-    } catch (error) {
-        toast.error(error);
-        setMessage(error);
-    }
+        } catch (error) {
+            console.log("Error occurred while sending password reset link:", error);
+            toast.error(error);
+            setMessage(error);
+        }
 
 
 

@@ -20,47 +20,48 @@ const MarkAttendance = () => {
   const id = localStorage.getItem("profile-id");
 
   const today = new Date().toISOString().split("T")[0];
-  // console.log("compare date", today);  // e.g. "2025-08-17"
+  console.log("compare date", today);  // e.g. "2025-08-17"
   // const dt = localStorage.getItem("unicdates");
 
 
-  // console.log("local get", mk);
+  console.log("local get", mk);
   useEffect(() => {
-    const dt = localStorage.getItem("unicdate");
+    const dt = localStorage.getItem("unicdates");
     if (dt) {
       setmk(dt);
     }
   }, [mk]);
 
   // lati 26.8828672,  80.9566208
- 
-  
+
+
 
 
 
 
   const handleSubmit = async (e) => {
-       let lati = 26.8828672
-       let longi = 80.9566208
+    let lati = 26.8828672
+    let longi = 80.9566208
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
 
     try {
-      if (!token) {
-        toast.error("User Not logged in");
-        setTimeout(() => navigate("/"), 1500);
-        return;
-      }
-const f=localStorage.getItem("leti")
-const s=localStorage.getItem("longi")
+      const f = localStorage.getItem("leti")
+      const s = localStorage.getItem("longi")
 
-        if (f==lati) {
+      if (f == lati) {
         console.log("yes");
         toast.error("Please get your current location first")
         setIsSubmitting(false)
         return
       }
+      if (!token) {
+        toast.error("User Not logged in");
+        setTimeout(() => navigate("/"), 1500);
+        return;
+      }
+
 
       if (mk.includes(today)) {
         toast.error("Attendance already marked");

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {BACK} from "./Util";
+import { BACK } from "./Util";
 
 const AttendanceDashboard = () => {
   const [attendance, setAttendance] = useState([]);
@@ -9,7 +9,7 @@ const AttendanceDashboard = () => {
   const imag = localStorage.getItem("profile-image");
 
   useEffect(() => {
- const fetchAttendance = async () => {
+    const fetchAttendance = async () => {
       try {
         const response = await axios.get(`${BACK}/user/${s}`);
         // console.log("recordd",response.data.records);
@@ -23,28 +23,33 @@ const AttendanceDashboard = () => {
     fetchAttendance();
   }, [s]);
   // filter date not dublicate date this logdate formate is "dd/mm/yyyy"
- 
-  const uniqueDates = attendance.reduce((acc, record) => {
-  // Convert to Date object
-  const d = new Date(record.date);
 
-  // Format as YYYY-MM-DD
-  const formatted = d.toISOString().split("T")[0];
+  useEffect(() => {
+    const uniqueDates = attendance.reduce((acc, record) => {
+      // Convert to Date object
+      const d = new Date(record.date);
 
-  if (!acc.includes(formatted)) {
-    acc.push(formatted);
-  }
-  return acc;
-}, []);
+      // Format as YYYY-MM-DD
+      const formatted = d.toISOString().split("T")[0];
 
-localStorage.setItem("unicdates", uniqueDates);
-console.log("uniqueDates", uniqueDates);
+      if (!acc.includes(formatted)) {
+        acc.push(formatted);
+      }
+      return acc;
+    }, []);
+    // uniqueDates()
+    localStorage.setItem("unicdates", uniqueDates);
+  },[attendance])
 
 
- 
+
+  // console.log("uniqueDates", uniqueDates);
+
+
+
   return (
     <div
-    
+
       style={{
         minHeight: "100vh",
         background: "linear-gradient(120deg, #43cea2 0%, #185a9d 50%, #ff512f 100%)",
@@ -55,7 +60,7 @@ console.log("uniqueDates", uniqueDates);
         padding: "2rem 1rem",
       }}
     >
-      
+
       <div
         style={{
           background: "rgba(255,255,255,0.13)",
@@ -73,7 +78,7 @@ console.log("uniqueDates", uniqueDates);
         <div className=" flex items-center justify-center  mb-4">
           <img src={imag} alt="Student" className="h-[250px]  rounded-full  w-[200px]" />
         </div>
-       
+
         {/* three box display P , A , L */}
         <div className="flex justify-center items-center mt-6 mb-4 gap-1">
           <div
@@ -175,7 +180,7 @@ console.log("uniqueDates", uniqueDates);
                     }}
                   >
                     <td style={{ color: "#222", padding: "0.9rem", fontWeight: 500 }}>
-                     {/* format date dd/mm/yyyy */}
+                      {/* format date dd/mm/yyyy */}
 
                       {new Date(record.date).toLocaleDateString("en-GB", {
                         day: "2-digit",
@@ -189,12 +194,12 @@ console.log("uniqueDates", uniqueDates);
                           record.status === "Present"
                             ? "#43cea2"
                             : record.status === "Absent"
-                            ? "#ff512f"
-                            : "#185a9d",
+                              ? "#ff512f"
+                              : "#185a9d",
                         fontWeight: 700,
                         padding: "0.9rem",
                         textTransform: "capitalize",
-                        fontSize:"20px",
+                        fontSize: "20px",
                       }}
                     >
                       {record.status}

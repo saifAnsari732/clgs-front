@@ -20,8 +20,10 @@ const Home = () => {
       await axios.get(`${BACK}/user/logout`, {
         withCredentials: true,
       })
+      localStorage.removeItem("leti")
+      localStorage.removeItem("longi")
       toast.success("User logout Successfull..");
-      console.log("saif ansari");
+      // console.log("saif ansari");
         localStorage.removeItem("authToken");
       setIsLoggedIn(false);
     
@@ -39,7 +41,7 @@ const Home = () => {
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [authToken]);
 
   const handleprofile= async()=>{
      if (!authToken) {

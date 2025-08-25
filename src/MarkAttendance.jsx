@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { BACK } from "./Util";
 import { useEffect } from "react";
@@ -13,18 +13,14 @@ const MarkAttendance = () => {
   const [mk, setmk] = useState([]);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [latitud, setletitud] = useState("")
-  const [longitud, setlongitud] = useState("")
-  const [tru, setfalse] = useState(false)
+  const [f, setf] = useState("")
+  const [s, sets] = useState("")
+  const [loce, setloc] = useState("")
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("profile-id");
 
   const today = new Date().toISOString().split("T")[0];
-  // console.log("compare date", today);  // e.g. "2025-08-17"
-  // const dt = localStorage.getItem("unicdates");
 
-
-  // console.log("local get", mk);
   useEffect(() => {
     const dt = localStorage.getItem("unicdates");
     if (dt) {
@@ -32,27 +28,41 @@ const MarkAttendance = () => {
     }
   }, [mk]);
 
-  // lati 26.8828672,  80.9566208
+  useEffect(() => {
+   const fetchlocation=async()=>{
+     const leti = localStorage.getItem("leti")
+     const long = localStorage.getItem("longi")
+     setf(leti)
+     sets(long)
+     try {
+      let apiUrl=`https://api.opencagedata.com/geocode/v1/json?key=9aa4291f91cf40b7bc10db15fbd01863&q=${leti}%2C+${long}&pretty=1&no_annotations=1`
+      const res= await fetch(apiUrl)
+      const data=await res.json()
+      
+      const {road,city,postcode}= data.results[0].components
+      const loc=  `${road}, ${postcode}, ${city}`;
+       setloc(loc)
+      // setloc(data.results[0].formatted);
+     } catch (error) {
+      console.log("error",error);
+     }
+   }
+     fetchlocation()
+    })
 
+    console.log(loce);
+    // console.log(lati);
 
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setError("");
+      setIsSubmitting(true);
 
-
-
-
-  const handleSubmit = async (e) => {
-    let lati = 26.8566528
-    let longi = 80.9566208
-    // f 26.8566528 s 80.9435136
-    e.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
+    const lati = "Rana Pratap Marg, 226001, Lucknow";
     try {
-      const f = localStorage.getItem("leti")
-      const s = localStorage.getItem("longi")
-      console.log("f", f, "s", s);
-      if (f != lati) {
-        toast.error("Please Enable current location.")
+     
+      if (loce != lati) {
+        toast.error("Enable current location When Login")
         setIsSubmitting(false)
         return
       }
@@ -84,6 +94,7 @@ const MarkAttendance = () => {
       // console.log("response", res);
       if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
         toast.success("Attendance marked successfully");
+        localStorage.removeItem("authToken")
         setDate("");
         setStatus("");
 
@@ -218,7 +229,14 @@ const MarkAttendance = () => {
         >
           {isSubmitting ? "Processing..." : "Mark Attendance"}
         </button>
-
+       <p className="text-end text-gray-600 ">
+         <Link
+           to="/"
+           className="text-gray-300 font-semibold hover:underline"
+         >
+           Home
+         </Link>
+       </p>
         {error && (
           <div style={{
             color: "#ff512f",

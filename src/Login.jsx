@@ -60,7 +60,7 @@ const Login = () => {
       setTimeout(() => {
         
         navigate("/profile");
-      }, 1200);
+      }, 1500);
     //  console.log("tokennnnn",response.data.token);
       localStorage.setItem("authToken", response.data.token);
       // Redirect to dashboard or home page

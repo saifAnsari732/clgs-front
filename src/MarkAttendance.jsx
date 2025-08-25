@@ -95,6 +95,7 @@ const MarkAttendance = () => {
       if (res.data && (res.data.message || res.status === 200 || res.status === 201)) {
         toast.success("Attendance marked successfully");
         localStorage.removeItem("authToken")
+        localStorage.removeItem("leti")
         setDate("");
         setStatus("");
 

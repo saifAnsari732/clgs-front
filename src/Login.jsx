@@ -11,6 +11,7 @@ const Login = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,12 +24,21 @@ const Login = () => {
 
 // current location compare
  const handlelocation=()=>{ 
-  if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition((position) => {
-      const latiiii = position.coords.latitude
-      const longiiiii = position.coords.longitude
+  
+ }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(async (position) => {
+      const latiiii =await position.coords.latitude
+      const longiiiii =await position.coords.longitude
        localStorage.setItem("leti",latiiii)
        localStorage.setItem("longi",longiiiii)
+       setLocation(true)
+       setLoading(false);
+       return;
     }
     // eslint-disable-next-line no-unused-vars
     , (err) => {
@@ -38,12 +48,6 @@ const Login = () => {
       return;
     })
   }
- }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
     try {
       const response = await axios.post(`${BACK}/user/login`, {
         email: formData.email,
@@ -55,12 +59,14 @@ const Login = () => {
       // date set local
       localStorage.setItem("date", response.data.date);
       toast.success("Student Login successful!",{
-        autoClose: 2000,
+        autoClose: 3000,
       });
-      setTimeout(() => {
-        
-        navigate("/profile");
-      }, 1500);
+      if(location){
+        setTimeout(() => {
+          
+          navigate("/profile");
+        }, 2000);
+      }
     //  console.log("tokennnnn",response.data.token);
       localStorage.setItem("authToken", response.data.token);
       // Redirect to dashboard or home page

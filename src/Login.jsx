@@ -38,7 +38,8 @@ const Login = () => {
        localStorage.setItem("longi",longiiiii)
        setLocation(true)
        setLoading(false);
-       return;
+       console.log("allow");
+      
     }
     // eslint-disable-next-line no-unused-vars
     , (err) => {
@@ -54,19 +55,20 @@ const Login = () => {
         password: formData.password,
       },{
         withCredentials: true, // Ensure cookies are sent with the request
-
       });
       // date set local
       localStorage.setItem("date", response.data.date);
-      toast.success("Student Login successful!",{
-        autoClose: 3000,
-      });
+     
       if(location){
         setTimeout(() => {
-          
           navigate("/profile");
         }, 2000);
+
+        setTimeout(() => {
+           toast.success("Student Login successful!");
+        }, 1000);
       }
+
     //  console.log("tokennnnn",response.data.token);
       localStorage.setItem("authToken", response.data.token);
       // Redirect to dashboard or home page

@@ -32,8 +32,8 @@ const Login = () => {
     setLoading(true);
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(async (position) => {
-      const latiiii =await position.coords.latitude
-      const longiiiii =await position.coords.longitude
+      const latiiii =await position.coords.latitud
+      const longiiiii =await position.coords.longitud
        localStorage.setItem("leti",latiiii)
        localStorage.setItem("longi",longiiiii)
        setLocation(true)
